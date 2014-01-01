@@ -17,13 +17,19 @@ class Baddies < BasicObject
 		end
 
 		def self.new_baddy_subclass_created_with args
-			Object.const_set args[:name].classify, Class.new(self) do
+			new_class = Class.new(self) do
 				args.each do |attribute, value|
-					instance_variable_set("@#{attribute}", value)
 					define_method("#{attribute}" ) { || instance_variable_get "@#{attribute}" }
 					define_method("#{attribute}=") { |new_value| instance_variable_set "@#{attribute}", new_value }
 				end
+				define_method("initialize") do
+					args.each do |attribute, value|
+						instance_variable_set("@#{attribute}", value)
+					end
+				end
 			end
+			Object.const_set args[:name].classify, new_class
+			new_class
 		end
 
 		def do_attack_on subject
