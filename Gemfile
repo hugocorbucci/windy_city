@@ -1,8 +1,9 @@
 source 'https://rubygems.org'
 
 gem 'pry'
-gem 'active_support'
+gem 'activesupport'
 gem 'i18n'
+gem 'sqlite3'
 
 group :test do
   gem 'rspec'
